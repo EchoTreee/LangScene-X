@@ -5,7 +5,7 @@ last_image=$2
 
 sam_model_path="./sam_vit_h_4b8939.pth"
 sam2_model_path="./sam2_hiera_large.pt"
-model_path="./CogVideo-X"
+model_path="./CogVideoX-ft"
 
 mkdir -p demo/rgb
 cp $first_image demo/rgb/0001.png
@@ -22,7 +22,7 @@ python auto-seg/auto-mask-align.py \
 # get normal maps
 python get_normal.py --base_path demo
 
-RGB video interpolation
+# RGB video interpolation
 python video_inference.py \
     --model_path $model_path \
     --output_dir demo/video/rgb \
