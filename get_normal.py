@@ -19,7 +19,7 @@ def main():
         "Stable-X/StableNormal",
         "StableNormal",
         trust_repo=True,
-        local_cache_dir="/home/lff/bigdata1/cjw/model_cache"
+        local_cache_dir="~/.cache/langscenex_models"
     )
     if not args.video_process:
         base_path = args.base_path
