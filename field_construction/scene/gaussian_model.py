@@ -14,7 +14,6 @@ import os
 import numpy as np
 import torch
 from plyfile import PlyData, PlyElement
-from pytorch3d.transforms import quaternion_to_matrix
 from simple_knn._C import distCUDA2
 from torch import nn
 
@@ -26,7 +25,7 @@ from field_construction.utils.general_utils import (build_rotation,
                                                     inverse_sigmoid,
                                                     strip_symmetric)
 from field_construction.utils.graphics_utils import BasicPointCloud
-from field_construction.utils.pose_utils import get_tensor_from_camera
+from field_construction.utils.pose_utils import get_tensor_from_camera, quad2rotation
 from field_construction.utils.sh_utils import RGB2SH
 from field_construction.utils.system_utils import mkdir_p
 
@@ -255,7 +254,7 @@ class GaussianModel:
         return pose
     
     def get_rotation_matrix(self):
-        return quaternion_to_matrix(self.get_rotation)
+        return quad2rotation(self.get_rotation)
 
     def get_covariance(self, scaling_modifier = 1):
         return self.covariance_activation(self.get_scaling, scaling_modifier, self._rotation)

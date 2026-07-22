@@ -616,15 +616,20 @@ if __name__ == '__main__':
     for frame_idx in range(len(frame_names)):
     # for frame_idx in frames_to_process:
         masks = npy_list[frame_idx]
-        image = image_list[frame_idx]
-        
-        image_np = np.array(image)
-        mask_combined = np.zeros_like(image_np, dtype=np.uint8)
 
-        for mask_id, mask in enumerate(masks):
-            mask = mask.squeeze(0)
-            mask_area = mask > 0
-            mask_combined[mask_area, :] = colors[mask_id]
+        if len(masks) == 0:
+            logger.warning(f"No masks found for frame index {frame_idx}, writing a black frame.")
+            image = image_list[frame_idx]
+            image_np = np.array(image)
+            mask_combined = np.zeros_like(image_np, dtype=np.uint8)
+        else:
+            mask_shape = masks[0].squeeze(0).shape
+            mask_combined = np.zeros((*mask_shape, 3), dtype=np.uint8)
+
+            for mask_id, mask in enumerate(masks):
+                mask = mask.squeeze(0)
+                mask_area = mask > 0
+                mask_combined[mask_area, :] = colors[mask_id]
 
         # Blend original image with colored mask
         mask_combined = np.clip(mask_combined, 0, 255)

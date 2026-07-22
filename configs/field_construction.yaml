@@ -21,7 +21,7 @@ video_processor:
 
 feature_extractor:
   type: "open-seg"
-  model_path: "/home/lff/data1/cjw/langscene/model_zoo/openseg_exported_clip"
+  model_path: "/workspace/projects/LangScene-X/model_zoo/openseg_exported_clip"
 
 pose_estimator:
   type: "vggt"

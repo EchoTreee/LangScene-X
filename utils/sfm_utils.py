@@ -19,8 +19,6 @@ from PIL.ImageOps import exif_transpose
 from plyfile import PlyData, PlyElement
 from tqdm import tqdm
 
-from dust3r.utils.device import to_numpy
-from dust3r.utils.image import _resize_pil_image
 from field_construction.scene.colmap_loader import (qvec2rotmat,
                                                     read_extrinsics_binary,
                                                     rotmat2qvec,
@@ -35,6 +33,24 @@ try:
     heif_support_enabled = True
 except ImportError:
     heif_support_enabled = False
+
+
+
+def to_numpy(x):
+    if isinstance(x, torch.Tensor):
+        return x.detach().cpu().numpy()
+    return np.asarray(x)
+
+
+def _resize_pil_image(img, long_edge_size):
+    width, height = img.size
+    if max(width, height) == long_edge_size:
+        return img
+    scale = long_edge_size / max(width, height)
+    new_width = max(1, int(round(width * scale)))
+    new_height = max(1, int(round(height * scale)))
+    return img.resize((new_width, new_height), resample=PIL.Image.Resampling.LANCZOS)
+
 
 ImgNorm = tvf.Compose([
     tvf.ToTensor(), 

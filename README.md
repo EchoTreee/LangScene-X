@@ -59,13 +59,19 @@ conda activate langscenex
 ```
 2. **Install dependencies**
 ```bash
-conda install pytorch torchvision -c pytorch -y
-pip install -e field_construction/submodules/simple-knn
-pip install -e field_construction/submodules/diff-langsurf-rasterizer
-pip install -e auto-seg/submodules/segment-anything-1
-pip install -e auto-seg/submodules/segment-anything-2
-pip install -r requirements.txt
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install torch torchvision torchaudio
+python -m pip install -r requirements.txt
+python -m pip install loguru einops mediapy
+python -m pip install --no-build-isolation -e field_construction/submodules/simple-knn
+python -m pip install --no-build-isolation -e field_construction/submodules/diff-langsurf-rasterizer
+python -m pip install -e auto-seg/submodules/segment-anything-1
+python -m pip install -e auto-seg/submodules/segment-anything-2
 ```
+
+3. **Blackwell GPU note**
+
+If you are deploying on NVIDIA Blackwell (`sm_120`), do not reuse the legacy mixed CUDA 12.4 toolchain described in older notes. Create a fresh `cu128` runtime first, verify a minimal CUDA matmul in PyTorch, and only then rebuild the local CUDA extensions. A copyable migration flow is documented in [BLACKWELL_MIGRATION.md](/workspace/projects/LangScene-X/BLACKWELL_MIGRATION.md).
 
 ### 3. Model Checkpoints
 The checkpoints of SAM, SAM2 and fine-tuned CogVideoX can be downloaded from our [huggingface repository](https://huggingface.co/chijw/LangScene-X).

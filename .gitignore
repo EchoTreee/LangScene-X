@@ -3,3 +3,32 @@
 **/__pycache__/
 **/data/
 **/output/
+
+# Model weights (download from HuggingFace)
+CogVideoX-ft/
+sam_vit_h_4b8939.pth
+sam2_hiera_large.pt
+model_zoo/
+
+# Inference outputs and runs
+runs/
+demo
+
+# Temporary files
+tmp/
+
+# Personal test inputs
+my_inputs/
+
+# Reference materials
+论文/
+点云效果图/
+
+# Build artifacts (compiled locally per environment)
+**/build/
+
+# Compiled CUDA extensions (built locally)
+*_C.cpython-*.so
+
+# Recovered session transcripts (may contain secrets)
+docs/sessions/

@@ -261,10 +261,17 @@ class Preprocessor:
         os.makedirs(raw_data_path, exist_ok=True)
         dirs_to_move = ["camera", "input", "lang_features_dim3", "normal"]
         
-        orig_view_nums = len(os.listdir(os.path.join(curr_data_path, "camera")))
-        indexs = np.linspace(0, orig_view_nums-1, cfg.pipeline.chunk_num * cfg.pipeline.keep_num_per_chunk)
-        indexs = indexs.astype(np.int32).tolist()
-        cfg.pipeline.selected_idxs = indexs
+        if cfg.pipeline.selected_idxs:
+            indexs = sorted(set(int(idx) for idx in cfg.pipeline.selected_idxs))
+        else:
+            orig_view_nums = len(os.listdir(os.path.join(curr_data_path, "camera")))
+            indexs = np.linspace(
+                0,
+                orig_view_nums - 1,
+                cfg.pipeline.chunk_num * cfg.pipeline.keep_num_per_chunk,
+            )
+            indexs = indexs.astype(np.int32).tolist()
+            cfg.pipeline.selected_idxs = indexs
 
         for dir_to_move in dirs_to_move:
             shutil.move(os.path.join(curr_data_path, dir_to_move), raw_data_path)

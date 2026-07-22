@@ -8,6 +8,13 @@ from diffusers.utils import export_to_video, load_image
 from cogvideox_interpolation.pipeline import CogVideoXInterpolationPipeline
 
 
+DEFAULT_PROMPT = (
+    "A blue laboratory workbench with a black computer monitor, a black mouse, "
+    "and a green digital image processing textbook, with lab stools and benches "
+    "in the background."
+)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Video interpolation with different checkpoints')
     parser.add_argument('--model_path', type=str, help='Path to the base model')
@@ -15,6 +22,7 @@ def parse_args():
     parser.add_argument('--output_dir', type=str, help='Directory for output videos')
     parser.add_argument('--first_image', type=str, help='Path to the first image')
     parser.add_argument('--last_image', type=str, help='Path to the last image')
+    parser.add_argument('--prompt', type=str, default=DEFAULT_PROMPT, help='Text prompt for video diffusion')
     return parser.parse_args()
 
 def main():
@@ -28,7 +36,8 @@ def main():
     pipe.enable_sequential_cpu_offload()
     pipe.vae.enable_tiling()
     pipe.vae.enable_slicing()
-    prompt = 'a 3D consistent video scene'
+    prompt = args.prompt
+    print(f"Using prompt: {prompt}")
 
     # checkpoints = ['ori', 800] 
     checkpoints = [800]
